@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="lib/echarts.min.js"></script>
+</head>
+
+<body>
+  <div style="width: 600px;height:400px"></div>
+  <script>
+    var mCharts = echarts.init(document.querySelector("div"))
+    var xDataArr = ['张三', '李四', '王五', '闰土', '小明', '茅台', '二妞', '大强']
+    var yDataArr = [88, 92, 63, 77, 94, 80, 72, 86]
+    var option = {
+      grid: { // 坐标轴容器
+        show: true, // 是否可见
+        borderWidth: 10, // 边框的宽度
+        borderColor: 'red', // 边框的颜色
+        left: 120, // 边框的位置
+        top: 120,
+        width: 300, // 边框的大小
+        height: 150
+      },
+      xAxis: {
+        type: 'category',
+        data: xDataArr
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          name: '语文',
+          type: 'bar',
+          markPoint: {
+            data: [
+              {
+                type: 'max', name: '最大值'
+              },{
+                type: 'min', name: '最小值'
+              }
+            ]
+          },
+          markLine: {
+            data: [
+              {
+                type: 'average', name: '平均值'
+              }
+            ]
+          },
+          label: {
+            show: true,
+            rotate: 60,
+            position: 'top'
+          },
+          barWidth: '30%',
+          data: yDataArr
+        }
+      ]
+    }
+    mCharts.setOption(option)
+  </script>
+</body>
+
+</html>

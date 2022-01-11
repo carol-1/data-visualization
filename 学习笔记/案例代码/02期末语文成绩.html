@@ -21,6 +21,7 @@
         var mCharts = echarts.init(document.querySelector('div'));
         var XDataArr = ['张三', '李四', '王五', '闰土', '小明', '茅台', '二姐', '大强'];
         var YDataArr = [88, 92, 63, 77, 94, 80, 72, 86];
+        var YDataArr1 = [89, 32, 73, 47, 64, 90, 42, 76];
         var option = {
             title: {
                 text: '成绩展示',
@@ -60,7 +61,9 @@
                 }
 
             },
-
+            legend: {
+                data: ['语文', '数学']
+            },
             xAxis: {
                 type: 'category',
                 data: XDataArr
@@ -93,6 +96,10 @@
                 },
                 barWidth: '30%',
                 data: YDataArr
+            }, {
+                name: '数学',
+                type: 'bar',
+                data: YDataArr1
             }]
 
 
