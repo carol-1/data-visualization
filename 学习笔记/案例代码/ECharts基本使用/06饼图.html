@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="lib/echarts.min.js"></script>
+    <script src="../lib/echarts.min.js"></script>
 
 </head>
 
@@ -37,7 +37,20 @@
         var option = {
             series: [{
                 type: 'pie',
-                data: pieData
+                data: pieData,
+                //配置节点配置信息
+                label: {
+                    show: true, //显示文字
+                    formatter: function(arg) {
+                        return arg.name + '平台' + arg.value + '元\n' + arg.percent + '%';
+                    }
+                },
+                //半径属性
+                //radius: '50%'
+                //radius: ['50%', '75%'],
+                roseType: 'radius', //南丁格尔图
+                selectedMode: 'single', //偏离原点
+                selectOffset: 30
             }]
         };
         mCharts.setOption(option);

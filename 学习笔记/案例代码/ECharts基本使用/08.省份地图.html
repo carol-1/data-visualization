@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    < <script src="../lib/echarts.min.js"></script>
+        <script src="../lib/jquery.min.js"></script>
+        <style>
+            div {
+                width: 600px;
+                height: 400px;
+            }
+        </style>
+</head>
+
+<body>
+    <div></div>
+    <script>
+        var mCharts = echarts.init(document.querySelector('div'));
+        $.get('json/map/province/anhui.json', function(ret) {
+            console.log(ret); //ret就是中国各个省份的矢量地图数据
+            echarts.registerMap('anhui', ret) //注册矢量数据
+            var option = {
+                geo: {
+                    type: 'map',
+                    map: 'anhui'
+                }
+            }
+            mCharts.setOption(option)
+        })
+    </script>
+</body>
+
+</html>
