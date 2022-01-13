@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../lib/echarts.min.js"></script>
+
+</head>
+
+<body>
+    <!-- //准备一个呈现图表的盒子 -->
+    <div style="width:600px;height:400px">
+
+    </div>
+    <script>
+        //初始化
+        var mCharts = echarts.init(document.querySelector('div'));
+        var pieData = [{
+            name: '淘宝',
+            value: '11231'
+        }, {
+            name: '京东',
+            value: '22673'
+        }, {
+            name: '唯品会',
+            value: '6123'
+        }, {
+            name: '1号店',
+            value: '8989'
+        }, {
+            name: '聚美优品',
+            value: '6700'
+        }, ]
+        var option = {
+            series: [{
+                type: 'pie',
+                data: pieData,
+                //调整高亮样式
+                emphasis: {
+                    itemStyle: {
+                        color: 'pink'
+                    }
+
+                },
+                //配置节点配置信息
+                label: {
+                    show: true, //显示文字
+                    formatter: function(arg) {
+                        return arg.name + '平台' + arg.value + '元\n' + arg.percent + '%';
+                    }
+                },
+                //半径属性
+                //radius: '50%'
+                //radius: ['50%', '75%'],
+                roseType: 'radius', //南丁格尔图
+                selectedMode: 'single', //偏离原点
+                selectOffset: 30
+            }]
+        };
+        mCharts.setOption(option);
+    </script>
+</body>
+
+</html>

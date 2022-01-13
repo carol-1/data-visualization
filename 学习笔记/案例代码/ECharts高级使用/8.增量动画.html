@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="lib/echarts.min.js"></script>
+</head>
+
+<body>
+    <div style="width: 600px;height:400px"></div>
+    <button id="modify">修改数据</button>
+    <button id="add">增加数据</button>
+    <script>
+        var mCharts = echarts.init(document.querySelector("div"))
+        var xDataArr = ['张三', '李四', '王五', '闰土', '小明', '茅台', '二妞', '大强']
+        var yDataArr = [88, 92, 63, 77, 94, 80, 72, 86]
+        var option = {
+            xAxis: {
+                type: 'category',
+                data: xDataArr
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                type: 'bar',
+                data: yDataArr,
+                markPoint: {
+                    data: [{
+                        type: 'max',
+                        name: '最大值'
+                    }, {
+                        type: 'min',
+                        name: '最小值'
+                    }]
+                },
+                markLine: {
+                    data: [{
+                        type: 'average',
+                        name: '平均值'
+                    }]
+                },
+                label: {
+                    show: true,
+                    rotate: 60
+                },
+                barWidth: '30%'
+            }]
+        }
+        mCharts.setOption(option)
+
+        var btnModify = document.querySelector('#modify')
+        btnModify.onclick = function() {
+            var newYDataArr = [68, 32, 99, 77, 94, 80, 72, 86]
+                // setOption 可以设置多次
+                // 新的option 和 旧的option
+                // 新旧option的关系并不是相互覆盖的关系, 是相互整合的关系
+                // 我们在设置新的option的时候, 只需要考虑到变化的部分就可以
+            var option = {
+                series: [{
+                    data: newYDataArr
+                }]
+            }
+            mCharts.setOption(option)
+        }
+        var btnAdd = document.querySelector('#add')
+        btnAdd.onclick = function() {
+            xDataArr.push('小明')
+            yDataArr.push(90)
+            var option = {
+                xAxis: {
+                    data: xDataArr
+                },
+                series: [{
+                    data: yDataArr
+                }]
+            }
+            mCharts.setOption(option)
+        }
+    </script>
+</body>
+
+</html>
