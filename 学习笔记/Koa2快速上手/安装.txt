@@ -1,0 +1,11 @@
+node -v 检查node版本
+npm init -y 在当前文件下安装packet....json文件  第三方依赖
+nom install koa 安装koa
+app.js 文件服务器文件：1.创建Koa对像 2.编写响应函数 3.监听端口
+node app.js 启动服务器
+npm init -y 报错的解决办法
+npm cache clean --force清除缓存
+
+app.use添加中间件,一个中间件就是一个函数
+next表示下一个中间件，只有调执行next()才能调用下一个中间件，
+调用next函数得到的是Promise对象
