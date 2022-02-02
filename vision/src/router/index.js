@@ -4,6 +4,7 @@ import SellerPage from '@/views/SellerPage'
 import TrendPage from '@/views/TrendPage'
 import MapPage from '@/views/MapPage'
 import RankPage from '@/views/RankPage'
+import HotPage from '@/views/HotPage'
 
 
 Vue.use(VueRouter)
@@ -23,6 +24,10 @@ const routes = [{
     {
         path: '/RankPage',
         component: RankPage //这是所找到的组件，这个组件会呈现在app.vue中要在app.vue中加载
+    },
+    {
+        path: '/HotPage',
+        component: HotPage //这是所找到的组件，这个组件会呈现在app.vue中要在app.vue中加载
     }
 
 ]

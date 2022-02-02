@@ -15,4 +15,4 @@ module.exports = {
       "space-before-function-paren": 0
     }
 }
-
+计算属性要写在初始化前面
