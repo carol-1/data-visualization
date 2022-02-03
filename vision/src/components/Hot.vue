@@ -136,7 +136,7 @@ export default {
           },
           series:[{
               radius:this.titleFontSize*5,
-              center:['50%','65%']
+              center:['50%','60%']
           }]
       }
       this.chartInstance.setOption(adapterOption);
