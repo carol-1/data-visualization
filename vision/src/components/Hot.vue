@@ -1,4 +1,4 @@
-<!-- 商家分布图表 -->
+<!-- 热销商品模块 -->
 <template>
   <div class="com-container">
     <div class="com-chart" ref="hot_ref"></div>
@@ -8,86 +8,98 @@
     <span class="iconfont arr-right" @click="toRight" :style="comStyle"
       >&#xe6ed;</span
     >
-    <span class="cat-name" :style="comStyle">{{catName}}</span>
+    <span class="cat-name" :style="comStyle">{{ catName }}</span>
   </div>
 </template>
 
 <script>
-
+import { mapState } from "vuex";
+import { getThemeValue } from "@/utils/theme_utils";
 export default {
   data() {
     return {
       chartInstance: null,
       allData: null,
-      currentIndex:0,//当前所展示出的一级分类数据
-      titleFontSize:0
-    }
+      currentIndex: 0, //当前所展示出的一级分类数据
+      titleFontSize: 0,
+    };
   },
-   computed: {
-    catName () {
+  created() {
+    // 在组件创建完成之后 进行回调函数的注册
+    this.$socket.registerCallBack("hotData", this.getData);
+  },
+  computed: {
+    catName() {
       if (!this.allData) {
-        return ''
+        return "";
       } else {
-        return this.allData[this.currentIndex].name
+        return this.allData[this.currentIndex].name;
       }
     },
-    comStyle () {
+    comStyle() {
       return {
-        fontSize: this.titleFontSize + 'px'
+        fontSize: this.titleFontSize + "px",
+        color: getThemeValue(this.theme).titleColor,
       }
-    }
+    },
+    ...mapState(['theme']),
   },
   mounted() {
     this.initChart();
-    this.getData();
+    this.$socket.send({
+      action: "getData",
+      socketType: "hotData",
+      chartName: "hot",
+      value: "",
+    });
+    // this.getData();
     window.addEventListener("resize", this.screenAdapter);
     this.screenAdapter();
   },
   destroyed() {
     window.removeEventListener("resize", this.screenAdapter);
+    this.$socket.unRegisterCallBack("hotData");
   },
 
   methods: {
     async initChart() {
-      this.chartInstance = this.$echarts.init(this.$refs.hot_ref, "chalk");
-     
+      this.chartInstance = this.$echarts.init(this.$refs.hot_ref, this.theme);
+
       const initOption = {
         title: {
           text: "▎热销商品的占比",
           left: 20,
           top: 20,
         },
-        legend:{
-           top:'15%',
-           icon:'circle'
+        legend: {
+          top: "15%",
+          icon: "circle",
         },
-        tooltip:{
-       
-            show:true,
-            formatter:(arg)=>{
-             
-              const thirdCategort =  arg.data.children
-              let  total=0
-              thirdCategort.forEach(item=>{
-                total +=  item.value
-              })
-              let retStr = ''
-              thirdCategort.forEach(item=>{
-                  retStr += `
-                  ${item.name}:${parseInt(item.value/total * 100)+'%'}
+        tooltip: {
+          show: true,
+          formatter: (arg) => {
+            const thirdCategort = arg.data.children;
+            let total = 0;
+            thirdCategort.forEach((item) => {
+              total += item.value;
+            });
+            let retStr = "";
+            thirdCategort.forEach((item) => {
+              retStr += `
+                  ${item.name}:${parseInt((item.value / total) * 100) + "%"}
                   <br/>
-                  `
-              })
-              return retStr
-            }
+                  `;
+            });
+            return retStr;
+          },
         },
-         series:[{
-              type:'pie'
-          }]
-
+        series: [
+          {
+            type: "pie",
+          },
+        ],
       };
       this.chartInstance.setOption(initOption);
-
     },
     async getData() {
       // 获取服务器的数据, 对this.allData进行赋值之后, 调用updateChart方法更新图表
@@ -97,66 +109,74 @@ export default {
       this.updateChart();
     },
     updateChart() {
-        const legendData = this.allData[this.currentIndex].children.map((item)=>{
-          return item.name
-      })
-      const seriesData = this.allData[this.currentIndex].children.map((item)=>{
+      const legendData = this.allData[this.currentIndex].children.map(
+        (item) => {
+          return item.name;
+        }
+      );
+      const seriesData = this.allData[this.currentIndex].children.map(
+        (item) => {
           return {
-              name:item.name,
-              value:item.value,
-              children:item.children
-          }
-      })
-      
+            name: item.name,
+            value: item.value,
+            children: item.children,
+          };
+        }
+      );
+
       const dataOption = {
-          legend:{
-              data:legendData
+        legend: {
+          data: legendData,
+        },
+        series: [
+          {
+            data: seriesData,
           },
-          series:[{
-              data:seriesData
-          }]
+        ],
       };
       this.chartInstance.setOption(dataOption);
     },
     screenAdapter() {
       this.titleFontSize = (this.$refs.hot_ref.offsetWidth / 100) * 3.6;
       const adapterOption = {
-          title:{
-              textStyle:{
-                  fontSize:this.titleFontSize
-              }
+        title: {
+          textStyle: {
+            fontSize: this.titleFontSize,
           },
-          legend:{
-              itemWidth:this.titleFontSize/2,
-              itemHeight:this.titleFontSize/2,
-              itemGap:this.titleFontSize/2,
-             textStyle: {
-            fontSize: this.titleFontSize / 2
-          }
+        },
+        legend: {
+          itemWidth: this.titleFontSize ,
+          itemHeight: this.titleFontSize ,
+          itemGap: this.titleFontSize / 2,
+          textStyle: {
+            fontSize: this.titleFontSize / 2,
           },
-          series:[{
-              radius:this.titleFontSize*5,
-              center:['50%','60%']
-          }]
-      }
+        },
+        series: [
+          {
+            radius: this.titleFontSize * 5,
+            center: ["50%", "60%"],
+          },
+        ],
+      };
       this.chartInstance.setOption(adapterOption);
       this.chartInstance.resize();
     },
-   toLeft(){
-       this.currentIndex--
-       if(this.currentIndex<0){
-           this.currentIndex = this.allData.length-1
-       }
-       this.updateChart()
-   },
-   toRight(){
-       this.currentIndex++
-       if(this.currentIndex>this.allData.length-1){
-           this.currentIndex = 0
-       }
-       this.updateChart()
-   }
-  }
+    toLeft() {
+      this.currentIndex--;
+      if (this.currentIndex < 0) {
+        this.currentIndex = this.allData.length - 1;
+      }
+      this.updateChart();
+    },
+    toRight() {
+      this.currentIndex++;
+      if (this.currentIndex > this.allData.length - 1) {
+        this.currentIndex = 0;
+      }
+      this.updateChart();
+    },
+  },
 };
 </script>
 

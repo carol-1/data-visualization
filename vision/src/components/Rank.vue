@@ -15,19 +15,32 @@ export default {
       timerId: null, //定时器的标识
     };
   },
+  created() {
+    // 在组件创建完成之后 进行回调函数的注册
+    this.$socket.registerCallBack("rankData", this.getData);
+  },
   mounted() {
     this.initChart();
-    this.getData();
+    // this.getData()
+    // 发送数据给服务器, 告诉服务器, 我现在需要数据
+    this.$socket.send({
+      action: "getData",
+      socketType: "rankData",
+      chartName: "rank",
+      value: "",
+    });
     window.addEventListener("resize", this.screenAdapter);
     this.screenAdapter();
   },
   destoryed() {
     window.removeEventListener("resize", this.screenAdapter);
     clearInterval(this.timerId);
+      // 在组件销毁的时候, 进行回调函数的取消
+    this.$socket.unRegisterCallBack("rankData");
   },
   methods: {
     initChart() {
-      this.chartInstance = this.$echarts.init(this.$refs.rank_ref, "chalk");
+      this.chartInstance = this.$echarts.init(this.$refs.rank_ref, this.theme);
       const initOption = {
         title: {
           text: "地区销售排行",

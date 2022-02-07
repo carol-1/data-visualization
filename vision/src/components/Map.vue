@@ -17,18 +17,31 @@ export default {
       boolean:false//判断是在国家地图上点击还是省份地图
     };
   },
+  created() {
+    // 在组件创建完成之后 进行回调函数的注册
+    this.$socket.registerCallBack("mapData", this.getData);
+  },
   mounted() {
     this.initChart();
-    this.getData();
+    // this.getData()
+    // 发送数据给服务器, 告诉服务器, 我现在需要数据
+    this.$socket.send({
+      action: "getData",
+      socketType: "mapData",
+      chartName: "map",
+      value: "",
+    });
     window.addEventListener("resize", this.screenAdapter);
     this.screenAdapter();
   },
-  destroyed() {
+   destroyed() {
     window.removeEventListener("resize", this.screenAdapter);
+    // 在组件销毁的时候, 进行回调函数的取消
+    this.$socket.unRegisterCallBack("mapData");
   },
   methods: {
     async initChart() {
-      this.chartInstance = this.$echarts.init(this.$refs.map_ref, "chalk");
+      this.chartInstance = this.$echarts.init(this.$refs.map_ref, this.theme);
       // 获取中国地图的矢量数据
       // http://localhost:9000/static/map/china.json
       // 由于我们现在获取的地图矢量数据并不是位于KOA2的后台, 所以咱们不能使用this.$http

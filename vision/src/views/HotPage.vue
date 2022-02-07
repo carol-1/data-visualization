@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import Hot from '@/components/Hot.vue'
+  import Hot from '@/components/Hot'
 export default {
 
       data(){
