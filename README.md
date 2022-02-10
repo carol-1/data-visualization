@@ -1,10 +1,5 @@
 # data-visualization
-这是一个学习黑马的电商平台的数据可视化实时监控系统，Echarts-vue项目
-需求分析：
-1.该项目为电商平台数据可视化实时监控系统
-2.可以保证实时获取数据进行分析
-3.支持大屏展示，自适应分辨率
-4.支持联动效果
+这是一个学习黑马的电商平台的数据可视化实时监控系统，Echarts-vue项目，通过本次项目对echarts和vue框架的具体应用有了更加深刻的了解
 
 技术选型：
 echarts,
@@ -17,7 +12,7 @@ WebSocket
 1.该项目为电商平台数据可视化实时监控系统
 2.可以保证实时获取数据进行分析
 3.支持大屏展示，自适应分辨率
-4.支持联动效果
+4.支持联动效果（没有实现）
 
 技术选型：
 echarts,
@@ -26,7 +21,7 @@ webpack
 Axios
 WebSocket
 
-1后台项目Koa_server
+1后台项目Koa_server文件夹
 目标：
     计算服务器处理请求的总耗时
     在响应头上加上响应内容的mime类型
@@ -38,7 +33,7 @@ WebSocket
     业务逻辑中间件
     允许跨域：实际通过Ajax访问器，同源策略（当前页面的地址和Ajax获取数据的地址）
 
-2前端项目vision
+2前端项目vision文件夹
 前端项目准备
   步骤：
      vue-cli搭建项目 npm install @vue/cli -g安装脚手架 项目地址：http://localhost:8081  npm run serve允许Vue
